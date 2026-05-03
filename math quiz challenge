@@ -1,0 +1,71 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+int main() {
+    srand(time(0));
+
+    int score = 0;
+    int totalQuestions = 5;
+
+    cout << "=================================\n";
+    cout << "       MATH QUIZ CHALLENGE       \n";
+    cout << "=================================\n";
+    cout << "Solve the questions and score points!\n";
+
+    for (int i = 1; i <= totalQuestions; i++) {
+        int num1 = rand() % 20 + 1;
+        int num2 = rand() % 20 + 1;
+        int operation = rand() % 4 + 1;
+        int correctAnswer;
+        int userAnswer;
+
+        cout << "\nQuestion " << i << ":\n";
+
+        if (operation == 1) {
+            correctAnswer = num1 + num2;
+            cout << num1 << " + " << num2 << " = ";
+        }
+        else if (operation == 2) {
+            correctAnswer = num1 - num2;
+            cout << num1 << " - " << num2 << " = ";
+        }
+        else if (operation == 3) {
+            correctAnswer = num1 * num2;
+            cout << num1 << " * " << num2 << " = ";
+        }
+        else {
+            num1 = num1 * num2; // makes division answer whole number
+            correctAnswer = num1 / num2;
+            cout << num1 << " / " << num2 << " = ";
+        }
+
+        cin >> userAnswer;
+
+        if (userAnswer == correctAnswer) {
+            cout << "Correct! +10 points\n";
+            score += 10;
+        }
+        else {
+            cout << "Wrong! Correct answer was: " << correctAnswer << endl;
+        }
+    }
+
+    cout << "\n=================================\n";
+    cout << "             RESULT              \n";
+    cout << "=================================\n";
+    cout << "Final Score: " << score << " out of " << totalQuestions * 10 << endl;
+
+    if (score == 50) {
+        cout << "Excellent! You are a Math Champion!\n";
+    }
+    else if (score >= 30) {
+        cout << "Good job! Keep practicing.\n";
+    }
+    else {
+        cout << "Need more practice. Try again!\n";
+    }
+
+    return 0;
+}
