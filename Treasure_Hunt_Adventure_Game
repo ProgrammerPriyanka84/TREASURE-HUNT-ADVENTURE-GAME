@@ -1,0 +1,122 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+int main() {
+    srand(time(0));
+
+    const int SIZE = 5;
+    char map[SIZE][SIZE];
+
+    int playerRow = 0, playerCol = 0;
+    int treasureRow = rand() % SIZE;
+    int treasureCol = rand() % SIZE;
+    int monsterRow = rand() % SIZE;
+    int monsterCol = rand() % SIZE;
+    int moves = 10;
+
+    // Make sure treasure and monster are not at player start position
+    while (treasureRow == 0 && treasureCol == 0) {
+        treasureRow = rand() % SIZE;
+        treasureCol = rand() % SIZE;
+    }
+
+    while ((monsterRow == 0 && monsterCol == 0) || 
+           (monsterRow == treasureRow && monsterCol == treasureCol)) {
+        monsterRow = rand() % SIZE;
+        monsterCol = rand() % SIZE;
+    }
+
+    cout << "=================================\n";
+    cout << "      TREASURE HUNT GAME\n";
+    cout << "=================================\n";
+    cout << "You are P on a 5x5 map.\n";
+    cout << "Find the hidden treasure before moves end.\n";
+    cout << "Avoid the hidden monster!\n";
+    cout << "Controls: W = Up, S = Down, A = Left, D = Right\n";
+
+    while (moves > 0) {
+        // Clear map
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                map[i][j] = '.';
+            }
+        }
+
+        map[playerRow][playerCol] = 'P';
+
+        cout << "\nMoves left: " << moves << endl;
+        cout << "Map:\n";
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                cout << map[i][j] << " ";
+            }
+            cout << endl;
+        }
+
+        char move;
+        cout << "\nEnter move: ";
+        cin >> move;
+
+        int newRow = playerRow;
+        int newCol = playerCol;
+
+        if (move == 'W' || move == 'w') {
+            newRow--;
+        }
+        else if (move == 'S' || move == 's') {
+            newRow++;
+        }
+        else if (move == 'A' || move == 'a') {
+            newCol--;
+        }
+        else if (move == 'D' || move == 'd') {
+            newCol++;
+        }
+        else {
+            cout << "Invalid move! Use W, A, S, D only.\n";
+            continue;
+        }
+
+        if (newRow < 0 || newRow >= SIZE || newCol < 0 || newCol >= SIZE) {
+            cout << "You cannot move outside the map!\n";
+            continue;
+        }
+
+        playerRow = newRow;
+        playerCol = newCol;
+        moves--;
+
+        if (playerRow == treasureRow && playerCol == treasureCol) {
+            cout << "\nYou found the treasure!\n";
+            cout << "You win the game!\n";
+            return 0;
+        }
+
+        if (playerRow == monsterRow && playerCol == monsterCol) {
+            cout << "\nOh no! You met the hidden monster!\n";
+            cout << "Game Over!\n";
+            return 0;
+        }
+
+        // Hint system
+        int distance = abs(playerRow - treasureRow) + abs(playerCol - treasureCol);
+
+        if (distance <= 1) {
+            cout << "Hint: You are very close to the treasure!\n";
+        }
+        else if (distance <= 3) {
+            cout << "Hint: You are getting closer.\n";
+        }
+        else {
+            cout << "Hint: Treasure is far away.\n";
+        }
+    }
+
+    cout << "\nMoves finished!\n";
+    cout << "Game Over! You could not find the treasure.\n";
+
+    return 0;
+}
